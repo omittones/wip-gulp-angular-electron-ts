@@ -1,7 +1,0 @@
-{
-  "name": "seed-gulp-ts",
-  "dependencies": {},
-  "globalDependencies": {
-    "gulp": "registry:dt/gulp#3.8.0+20160724062653"
-  }
-}
