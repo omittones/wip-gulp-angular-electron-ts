@@ -1,0 +1,6 @@
+.vscode
+coverage/
+node_modules/
+lib/
+npm-debug.log
+*.sublime-workspace
