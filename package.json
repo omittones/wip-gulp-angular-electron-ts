@@ -14,6 +14,7 @@
   "main": "lib/main.js",
   "typings": "lib/main.d.ts",
   "scripts": {
+    "build": "gulp build",
     "start": "gulp build && electron .",
     "test": "gulp test"
   },

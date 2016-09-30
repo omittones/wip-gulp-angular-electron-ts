@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 
-for (let i = 0; i < 10; i++) {
-    console.log(`logging from ${i}`);
+let numbers = _.range(0, 10);
+let texts = _.map(numbers, n => `logging from ${n}`);
 
-}
+_.each(texts, t => console.log(t));

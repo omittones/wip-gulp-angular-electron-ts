@@ -1,0 +1,1 @@
+start-process -NoNewWindow ".\node_modules\.bin\electron" -ArgumentList "."
