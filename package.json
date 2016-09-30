@@ -11,14 +11,15 @@
   "files": [
     "lib"
   ],
-  "main": "lib/index.js",
-  "typings": "lib/index.d.ts",
+  "main": "lib/main.js",
+  "typings": "lib/main.d.ts",
   "scripts": {
-    "start": "gulp build && node ./lib/index.js",
+    "start": "gulp build && electron .",
     "test": "gulp test"
   },
   "dependencies": {
-    "@types/node": "6.0.31"
+    "@types/node": "6.0.31",
+    "electron": "^1.4.2"
   },
   "devDependencies": {
     "@types/chai": "3.4.30",
