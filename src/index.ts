@@ -1,3 +1,4 @@
 import { Greeter } from "./greeter";
 
-export { Greeter };
+let greeter = new Greeter("me");
+console.info(greeter.greet());
