@@ -1,9 +1,5 @@
-import { Greeter } from './greeter';
 import * as Electron from 'electron';
 import { app } from 'electron';
-
-let greeter = new Greeter('me');
-console.info(greeter.greet());
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -14,7 +10,7 @@ function createWindow () {
   win = new Electron.BrowserWindow({ width: 800, height: 600 });
 
   // and load the index.html of the app.
-  win.loadURL(`file://${__dirname}/main.html`);
+  win.loadURL(`file://${__dirname}/index.html`);
 
   // Open the DevTools.
   win.webContents.openDevTools();

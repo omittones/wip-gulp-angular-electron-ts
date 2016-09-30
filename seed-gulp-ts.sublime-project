@@ -6,7 +6,8 @@
     "bin",
     "obj",
     "packages",
-    "node_modules"
+    "node_modules",
+    "lib"
    ],
    "file_exclude_patterns": [
     "*.sublime-workspace"
