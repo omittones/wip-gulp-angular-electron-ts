@@ -27,7 +27,17 @@ gulp.task('lint', 'Lints all TypeScript source files', function () {
     .pipe(tslint.report());
 });
 
-gulp.task('build', 'Compiles all TypeScript source files', ['lint'], function (cb) {
+gulp.task('html', 'Copies all html source files', function() {
+    return gulp.src('src/*.html')
+      .pipe(gulp.dest('lib'));
+});
+
+gulp.task('css', 'Copies all css source files', function() {
+    return gulp.src('src/*.css')
+      .pipe(gulp.dest('lib'));
+});
+
+gulp.task('build', 'Compiles all TypeScript source files', ['html', 'lint'], function (cb) {
   exec('tsc --version', function (err, stdout, stderr) {
     console.log('Using TypeScript ', stdout);
     if (stderr) {
