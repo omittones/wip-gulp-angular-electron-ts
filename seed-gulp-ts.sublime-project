@@ -1,18 +1,24 @@
 {
- "folders": [
-  {
-   "folder_exclude_patterns": [
-    ".vs",
-    "bin",
-    "obj",
-    "packages",
-    "node_modules",
-    "lib"
-   ],
-   "file_exclude_patterns": [
-    "*.sublime-workspace"
-   ],
-   "path": "."
-  }
- ]
+    "folders": [
+        {
+            "file_exclude_patterns": [
+                "*.sublime-workspace"
+            ],
+            "folder_exclude_patterns": [
+                ".vs",
+                "bin",
+                "obj",
+                "packages",
+                "node_modules",
+                "lib"
+            ],
+            "path": "."
+        },
+        {
+            "file_include_patterns": [
+                "*.d.ts"
+            ],
+            "path": "./node_modules/@types"
+        }
+    ]
 }

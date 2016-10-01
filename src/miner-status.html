@@ -1,0 +1,26 @@
+<div ng-class="{miner:true, inactive:$ctrl.miner.status !== 'active'}">
+    <h2 class="title">{{$ctrl.miner.name}} {{$ctrl.miner.loading ? '...loading...' : ''}}</h2>
+    <h3 class="timestamp" ng-if="!$ctrl.miner.error">Last timestamp: {{$ctrl.lastTimestamp()}}</h3>
+    <h3 class="error" ng-if="$ctrl.miner.error">{{$ctrl.miner.error}}</h3>
+    <pre class="ps">{{$ctrl.miner.ps}}</pre>
+    <ul class="statistics">
+        <li>Difficulty: {{$ctrl.miner.info.difficulty}}</li>
+        <li>Keypool size: {{$ctrl.miner.info.keypoolsize}}</li>
+        <li>Blocks: {{$ctrl.miner.info.blocks}}</li>
+        <li>Balance: {{$ctrl.miner.walletinfo.balance}}</li>
+        <li>Immature Balance: {{$ctrl.miner.walletinfo.immature_balance}}</li>
+        <li>Unconfirmed Balance: {{$ctrl.miner.walletinfo.unconfirmed_balance}}</li>
+        <li>IP: {{$ctrl.miner.ip}}</li>
+    </ul>
+    <div class="history">
+        <canvas id="line" class="chart chart-line" chart-data="$ctrl.miner.chart.data"
+        chart-labels="$ctrl.miner.chart.labels" chart-series="$ctrl.miner.chart.series"
+        chart-options="$ctrl.miner.chart.options" chart-dataset-override="$ctrl.miner.chart.datasetOverride" >
+        </canvas>
+    </div>
+
+    <div class="logs">
+        <button ng-click="$ctrl.toggleLogs()">{{$ctrl.isLogVisible() ? 'Hide' : 'Show' }}</button>
+        <pre ng-if="$ctrl.isLogVisible()" class="last">{{$ctrl.miner.last}}</pre>
+    </div>
+</div>

@@ -1,11 +1,82 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" ng-app="minerDashboard">
 <head>
     <meta charset="utf-8">
     <title>My HTML File</title>
-    <script src="index.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script type="text/javascript" src="bower_components/moment/moment.js"></script>
+    <script type="text/javascript" src="bower_components/chart.js/dist/Chart.bundle.js"></script>
+    <script type="text/javascript" src="bower_components/angular-chart.js/dist/angular-chart.js"></script>
+    <script type="text/javascript" src="bower_components/lodash/lodash.js"></script>
+    <script type="text/javascript" src="index.js"></script>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+    <style type="text/css">
+
+        .dashboard {
+        }
+        .miner-container {
+            display: inline-block;
+            width: 33%;
+            padding: 0;
+            min-width: 34em;
+            margin: 0;
+        }
+        .miner {
+            margin-bottom: 5em;
+            padding-left: 1em;
+        }
+        .miner.inactive {
+            color:gray;
+        }
+        .miner.inactive canvas {
+            opacity: 0.2;
+        }
+        .title {
+        }
+        .timestamp {
+        }
+        .error {
+        }
+        .statistics {
+            margin-bottom: 1em;
+            width: 30%;
+            display: inline-block;
+            font-size: 0.7em;
+            padding-left: 2em;
+            top: -9em;
+            position: relative;
+            overflow: overlay;
+        }
+        .history {
+            width: 69%;
+            display: inline-block;
+            margin-top: 1em;
+            height: 14em;
+        }
+        .logs {
+            position: relative;
+            top: -5em;
+        }
+        .ps {
+            font-size: 0.6em;
+            overflow: hidden;
+            margin: 0;
+            min-height: 13em;
+        }
+        .last {
+            overflow: scroll;
+            height: 40em;
+            margin-top: 1em;
+            font-size: 0.5em;
+            position: absolute;
+            z-index: 1;
+            width: 95%;
+        }
+
+    </style>
 </head>
 <body>
-	This is my new main window
+    <dashboard>
+    </dashboard>
 </body>
 </html>
