@@ -1,6 +1,8 @@
 import * as moment from 'moment'
 import * as _ from 'lodash'
 import * as angular from 'angular';
+import 'chart.js';
+import 'angular-chart.js';
 
 var app = angular.module('minerDashboard', ['chart.js']);
 

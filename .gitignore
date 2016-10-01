@@ -1,6 +1,7 @@
 .vscode
 coverage/
 node_modules/**
+src/bower_components
 lib/
 npm-debug.log
 *.sublime-workspace

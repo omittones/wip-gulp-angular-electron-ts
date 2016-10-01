@@ -5,6 +5,8 @@ var mocha = require('gulp-mocha');
 var gulp = require('gulp-help')(gulp);
 var path = require('path');
 var del = require('del');
+var concatCss = require('gulp-concat-css');
+
 var tslintCustom = require('tslint'); // for tslint-next https://github.com/panuhorsmalahti/gulp-tslint#specifying-the-tslint-module
 require('dotbin');
 
@@ -33,7 +35,12 @@ gulp.task('html', 'Copies all html source files', function() {
 });
 
 gulp.task('css', 'Copies all css source files', function() {
-    return gulp.src('src/*.css')
+    var css = [
+      'src/bower_components/bootstrap/dist/css/bootstrap.css',
+      'src/css/*.css'
+    ];
+    return gulp.src(css)
+      .pipe(concatCss('bundle.css'))
       .pipe(gulp.dest('lib'));
 });
 

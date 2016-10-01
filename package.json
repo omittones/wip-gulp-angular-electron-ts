@@ -25,7 +25,9 @@
     "@types/moment": "^2.13.0",
     "@types/node": "^6.0.31",
     "angular": "^1.5.8",
+    "angular-chart.js": "^1.0.3",
     "electron": "^1.4.2",
+    "gulp-concat-css": "^2.3.0",
     "lodash": "^4.16.2",
     "moment": "^2.15.1"
   },
