@@ -26,6 +26,7 @@
     "@types/node": "^6.0.31",
     "angular": "^1.5.8",
     "angular-chart.js": "^1.0.3",
+    "do-wrapper": "^3.10.0",
     "electron": "^1.4.2",
     "lodash": "^4.16.2",
     "moment": "^2.15.1"
