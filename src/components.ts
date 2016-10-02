@@ -1,4 +1,4 @@
-//http://stackoverflow.com/questions/30712638/typescript-export-imported-interface
+// http://stackoverflow.com/questions/30712638/typescript-export-imported-interface
 /*
 // export the default export of a legacy (`export =`) module
 export import MessageBase = require('./message-base');
@@ -17,7 +17,7 @@ import { module } from 'angular';
     angular.module = function(name, requires, config): ng.IModule {
         let module = baseModule(name, requires, config);
         module.componentClass = function(factory: ng.ComponentConstructor) {
-            var controller: any = factory;
+            let controller: any = factory;
             if (factory.$inject && factory.$inject.length > 0) {
                 controller = factory.$inject.slice();
                 controller.push(factory);
@@ -30,7 +30,7 @@ import { module } from 'angular';
                 transclude: factory.$transclude
             });
             return module;
-        }
+        };
         return module;
     };
 })(angular, module);

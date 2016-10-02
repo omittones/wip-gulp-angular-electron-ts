@@ -67,7 +67,7 @@ gulp.task('css', 'Copies all css source files', function() {
 });
 
 //gulp.task('build', 'Compiles all TypeScript source files', ['html', 'lint'], function (cb) {
-gulp.task('ts', 'Compiles all TypeScript source files', function(cb) {
+gulp.task('ts', 'Compiles all TypeScript source files', ['lint'], function(cb) {
     exec('tsc --version', function(err, stdout, stderr) {
         console.log('Using TypeScript ', stdout);
         if (stderr) {
