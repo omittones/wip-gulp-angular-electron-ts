@@ -55,39 +55,39 @@ export default class DashboardComponent implements ng.IComponentController {
             }
         }
 
-        loadMinerFile(miner, 'history.json', function(body: any) {
+        this.loadMinerFile(miner, 'history.json', function(body: any) {
             miner.history = (body ? _.sortBy(body, ['timestamp']) : []) as Core.IWalletInfo[];
             var ago24h = moment('now').milliseconds() - (24 * 60 * 60 * 1000);
             miner.history = _.filter(miner.history, (i: Core.IWalletInfo) => i.timestamp > ago24h);
             toggleFlagIfDone();
         });
 
-        loadMinerFile(miner, 'info.json', function(body: any) {
+        this.loadMinerFile(miner, 'info.json', function(body: any) {
             miner.info = body;
             toggleFlagIfDone();
         });
 
-        loadMinerFile(miner, 'walletinfo.json', function(body: any) {
+        this.loadMinerFile(miner, 'walletinfo.json', function(body: any) {
             miner.walletinfo = body;
             toggleFlagIfDone();
         });
 
-        loadMinerFile(miner, 'ps.log', function(body: any) {
+        this.loadMinerFile(miner, 'ps.log', function(body: any) {
             miner.ps = body;
             toggleFlagIfDone();
         });
 
-        loadMinerFile(miner, 'last.log', function(body: any) {
+        this.loadMinerFile(miner, 'last.log', function(body: any) {
             miner.last = body;
             toggleFlagIfDone();
         });
+    }
 
-        function loadMinerFile(miner: Core.IMiner, path: string, callback: (body: any) => void) {
-            this.minerFile.get({
-                id: miner.id,
-                path: path
-            }).then(callback);
-        }
+    private loadMinerFile(miner: Core.IMiner, path: string, callback: (body: any) => void) {
+        this.minerFile.get({
+            id: miner.id,
+            path: path
+        }).then(callback);
     }
 
     private getError(response: any) {

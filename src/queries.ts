@@ -6,10 +6,16 @@ import DO = DigitalOcean;
 const API_KEY = 'e784ba66d663ecd5cddbacec797505ff1ffec72bda0a8b2e4c8a38d9c66f4bf0';
 
 function mapDroplet(droplet: DO.Droplet): Core.IMiner {
+
+    function getIp(droplet: DO.Droplet): string {
+        var ip = _.find(droplet.networks.v4, ip => ip.type == 'public');
+        return ip ? ip.ip_address : null;
+    }
+
     return {
         id: droplet.id,
         name: droplet.name,
-        ip: this.getIp(droplet),
+        ip: getIp(droplet),
         status: droplet.status
     };
 }
@@ -41,13 +47,6 @@ export class MinerQuery implements Core.IQuery<Core.IMiner, {}> {
 
         return defered.promise;
     }
-
-    private getIp(droplet: DO.Droplet): string {
-        var ip = _.find(droplet.networks.v4, ip => ip.type == 'public');
-        return ip ? ip.ip_address : null;
-    }
-
-
 }
 
 
