@@ -17,10 +17,7 @@ var tsFilesGlob = (function(c) {
 
 gulp.task('clean', 'Cleans the generated js files from lib directory', function() {
     return del([
-        'lib/**/*',
-        'lib/css',
-        'lib/fonts',
-        'lib/js'
+        'lib/**/*'
     ]);
 });
 
