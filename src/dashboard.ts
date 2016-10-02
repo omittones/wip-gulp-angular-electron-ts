@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import * as moment from 'moment';
 
 export default class DashboardComponent implements ng.IComponentController {
@@ -14,24 +15,26 @@ export default class DashboardComponent implements ng.IComponentController {
         private minerFile: Core.IQuery<any, Core.MinerFileRequest>,
         private $interval: angular.IIntervalService) {
 
-        var intervals: angular.IPromise<any>[] = [];
+        this.intervals = [];
 
         this.loadMiners();
     }
 
     private loadMiners() {
-        this.miners.get().then(function(response: any) {
 
-            _.each(this.intervals, (p: angular.IPromise<any>) => {
-                this.$interval.cancel(p);
+        var self = this;
+        this.miners.get().then(function(response) {
+
+            _.each(self.intervals, (p: angular.IPromise<any>) => {
+                self.$interval.cancel(p);
             });
-            this.intervals.length = 0;
+            self.intervals.length = 0;
 
-            this.model = response.data;
-            _.each(this.model, function(miner: Core.IMiner) {
+            self.model = response;
+            _.each(self.model, function(miner: Core.IMiner) {
                 if (miner.status === 'active') {
-                    var bound = this.loadMiner.bind(this, miner);
-                    this.intervals.push(this.$interval(bound, 5000));
+                    var bound = self.loadMiner.bind(self, miner);
+                    self.intervals.push(self.$interval(bound, 5000));
                     bound();
                 }
             });

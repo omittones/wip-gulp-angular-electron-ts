@@ -11,10 +11,10 @@ export default class MinerStatusComponent implements ng.IComponentController {
     static $name = 'minerStatus';
     static $templateUrl = 'miner-status.html';
     static $bindings = {
-        miner: '<'
+        model: '<'
     };
 
-    public miner: Core.IMiner;
+    public model: Core.IMiner;
 
     constructor() {
     }
@@ -23,8 +23,8 @@ export default class MinerStatusComponent implements ng.IComponentController {
 
         var temp = MinerStatusComponent.$inject;
 
-        if (this.miner.history) {
-            var times = _.map(this.miner.history, (m: Core.IWalletInfo) => {
+        if (this.model.history) {
+            var times = _.map(this.model.history, (m: Core.IWalletInfo) => {
                 return m.timestamp || 0;
             });
             var timestamp = _.max(times);
@@ -35,22 +35,22 @@ export default class MinerStatusComponent implements ng.IComponentController {
     }
 
     public isLogVisible() {
-        return MinerStatusComponent.logVisible[this.miner.id];
+        return MinerStatusComponent.logVisible[this.model.id];
     }
 
     public toggleLogs() {
-        MinerStatusComponent.logVisible[this.miner.id] = !MinerStatusComponent.logVisible[this.miner.id];
+        MinerStatusComponent.logVisible[this.model.id] = !MinerStatusComponent.logVisible[this.model.id];
     }
 
     public chart(): any {
-        if (this.miner && this.miner.history) {
+        if (this.model && this.model.history) {
             return {
-                labels: _.map(this.miner.history, (h: Core.IWalletInfo) => ago(h.timestamp)),
+                labels: _.map(this.model.history, (h: Core.IWalletInfo) => ago(h.timestamp)),
                 series: ['balance', 'immature_balance', 'unconfirmed_balance'],
                 data: [
-                    _.map(this.miner.history, h => h.balance),
-                    _.map(this.miner.history, h => h.immature_balance),
-                    _.map(this.miner.history, h => h.unconfirmed_balance)
+                    _.map(this.model.history, h => h.balance),
+                    _.map(this.model.history, h => h.immature_balance),
+                    _.map(this.model.history, h => h.unconfirmed_balance)
                 ],
                 datasetOverride: [{
                     yAxisID: 'y-axis-1'

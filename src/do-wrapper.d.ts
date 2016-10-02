@@ -1,6 +1,11 @@
 declare module 'do-wrapper' {
 
-	export class DigitalOcean {
+	import CallbackAny = DigitalOcean.CallbackAny;
+	import SSHKey = DigitalOcean.SSHKey;
+	import Callback = DigitalOcean.Callback;
+	import DropletResponse = DigitalOcean.DropletResponse;
+
+	class DigitalOcean {
 
 		constructor(apiKey: string, pageSize?: number);
 
@@ -366,6 +371,11 @@ declare module 'do-wrapper' {
 		public floatingIpsGetAction(ipAddress: string, actionId: number, callback: CallbackAny): any;
 	}
 
+	export = DigitalOcean;
+}
+
+declare namespace DigitalOcean {
+
 	export type CallbackAny = (err: any, res: any, body: any) => void;
 
 	export type Callback<T> = (err: any, res: any, body: T) => void;
@@ -464,4 +474,6 @@ declare module 'do-wrapper' {
 	export interface Meta {
 		total: number;
 	}
+
+
 }

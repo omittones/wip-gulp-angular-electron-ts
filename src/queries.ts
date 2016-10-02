@@ -1,10 +1,11 @@
-import * as dow from 'do-wrapper';
 import * as https from 'https';
 import * as _ from 'lodash';
+import DigitalOcean = require('do-wrapper');
+import DO = DigitalOcean;
 
 const API_KEY = 'e784ba66d663ecd5cddbacec797505ff1ffec72bda0a8b2e4c8a38d9c66f4bf0';
 
-function mapDroplet(droplet: dow.Droplet): Core.IMiner {
+function mapDroplet(droplet: DO.Droplet): Core.IMiner {
     return {
         id: droplet.id,
         name: droplet.name,
@@ -15,13 +16,13 @@ function mapDroplet(droplet: dow.Droplet): Core.IMiner {
 
 export class MinerQuery implements Core.IQuery<Core.IMiner, {}> {
 
-    private api: dow.DigitalOcean;
+    private api: DigitalOcean;
 
     static $inject = ['$http', '$q'];
     constructor(
         private $http: ng.IHttpService,
         private $q: ng.IQService) {
-        this.api = new dow.DigitalOcean(API_KEY, 1000);
+        this.api = new DigitalOcean(API_KEY, 1000);
     }
 
     public get(request: {}): ng.IPromise<Core.IMiner[]> {
@@ -41,7 +42,7 @@ export class MinerQuery implements Core.IQuery<Core.IMiner, {}> {
         return defered.promise;
     }
 
-    private getIp(droplet: dow.Droplet): string {
+    private getIp(droplet: DO.Droplet): string {
         var ip = _.find(droplet.networks.v4, ip => ip.type == 'public');
         return ip ? ip.ip_address : null;
     }
@@ -52,12 +53,12 @@ export class MinerQuery implements Core.IQuery<Core.IMiner, {}> {
 
 export class MinerFileQuery implements Core.IQuery<Core.MinerFileRespone, Core.MinerFileRequest> {
 
-    private api: dow.DigitalOcean;
+    private api: DigitalOcean;
 
     static $inject = ['$http', '$q'];
     constructor(private $http: ng.IHttpService,
         private $q: ng.IQService) {
-        this.api = new dow.DigitalOcean(API_KEY, 1000);
+        this.api = new DigitalOcean(API_KEY, 1000);
     }
 
     public get(request: Core.MinerFileRequest): ng.IPromise<Core.MinerFileRespone> {
