@@ -33,41 +33,46 @@ interface IMiner {
     info?: any;
 }
 
-function rebuildChart(miner: IMiner) {
-    miner.chart = miner.chart || {};
-    if (miner.history) {
-        miner.chart.labels = _.map(miner.history, (h:IWalletInfo) => ago(h.timestamp));
-        miner.chart.series = ['balance', 'immature_balance', 'unconfirmed_balance'];
-        miner.chart.data = [
-            _.map(miner.history, h => h.balance),
-            _.map(miner.history, h => h.immature_balance),
-            _.map(miner.history, h => h.unconfirmed_balance)
-        ];
-        miner.chart.datasetOverride = [{
-            yAxisID: 'y-axis-1'
-        }, {
-                yAxisID: 'y-axis-2'
-            }];
-        miner.chart.options = {
-            animation: {
-                duration: 0
-            },
-            scales: {
-                yAxes: [{
-                    id: 'y-axis-1',
-                    type: 'linear',
-                    display: true,
-                    position: 'left'
-                }, {
-                        id: 'y-axis-2',
-                        type: 'linear',
-                        display: true,
-                        position: 'right'
-                    }]
-            }
-        };
+interface IQuery<TView, TRequest> {
+    get(request: TRequest): ng.IPromise<TView[]>;
+}
+
+interface ISimpleQuery<TView> extends IQuery<TView, {}> {
+    get(): ng.IPromise<TView[]>;
+}
+
+class MinerQuery implements IQuery<IMiner, {}> {
+    static $inject = ['$http'];
+    constructor(private $http: ng.IHttpService) {
+    }
+
+    public get(request: {}): ng.IPromise<IMiner[]> {
+        return this.$http.get('miner');
     }
 }
+
+type MinerFileRequest = { id: string, path: string }
+
+class MinerFileQuery implements IQuery<any, MinerFileRequest> {
+    static $inject = ['$http'];
+    constructor(private $http: ng.IHttpService) {
+    }
+
+    public get(request: MinerFileRequest): ng.IPromise<any> {
+        var url = 'miner/' + request.id + '/' + request.path;
+        console.log('loading from ' + url);
+        return this.$http.get(url).then(function(response: any) {
+            console.log(url + ' loaded ok');
+            return response.data;
+        }, function(response: any) {
+            console.log(url + ' error loading');
+            return null;
+        });
+    }
+}
+
+app.service('minerQuery', ['$http', ($http: ng.IHttpService) => new MinerQuery($http)]);
+app.service('minerFileQuery', ['$http', ($http: ng.IHttpService) => new MinerFileQuery($http)]);
 
 app.component('minerStatus', {
     templateUrl: 'miner-status.html',
@@ -76,9 +81,51 @@ app.component('minerStatus', {
     },
     controller: function() {
 
+        var self = this;
+        var miner: IMiner = this.miner || {};
+        this.chart = function() {
+            if (miner.history) {
+                return {
+                    labels: _.map(miner.history, (h: IWalletInfo) => ago(h.timestamp)),
+                    series: ['balance', 'immature_balance', 'unconfirmed_balance'],
+                    data: [
+                        _.map(miner.history, h => h.balance),
+                        _.map(miner.history, h => h.immature_balance),
+                        _.map(miner.history, h => h.unconfirmed_balance)
+                    ],
+                    datasetOverride: [{
+                        yAxisID: 'y-axis-1'
+                    }, {
+                            yAxisID: 'y-axis-2'
+                        }],
+                    options: {
+                        animation: {
+                            duration: 0
+                        },
+                        scales: {
+                            yAxes: [{
+                                id: 'y-axis-1',
+                                type: 'linear',
+                                display: true,
+                                position: 'left'
+                            }, {
+                                    id: 'y-axis-2',
+                                    type: 'linear',
+                                    display: true,
+                                    position: 'right'
+                                }]
+                        }
+
+                    }
+                };
+            } else {
+                return null;
+            }
+        }
+
         this.lastTimestamp = function() {
             if (this.miner.history) {
-                var times = _.map(this.miner.history, (m:IWalletInfo) => {
+                var times = _.map(this.miner.history, (m: IWalletInfo) => {
                     return m.timestamp || 0;
                 });
                 var timestamp = _.max(times);
@@ -100,14 +147,15 @@ app.component('minerStatus', {
 
 app.component('dashboard', {
     templateUrl: 'dashboard.html',
-    controller: ['$http', '$interval', function($http: angular.IHttpService, $interval: angular.IIntervalService) {
+    controller: ['minerQuery', 'minerFileQuery', '$interval', function(
+        miners: ISimpleQuery<IMiner>,
+        minerFile: IQuery<any, MinerFileRequest>,
+        $interval: angular.IIntervalService) {
 
         var intervals: angular.IPromise<any>[] = [];
-
         var self = this;
-
         function loadMiners() {
-            $http.get('miner').then(function(response: any) {
+            miners.get().then(function(response: any) {
 
                 _.each(intervals, (p: angular.IPromise<any>) => {
                     $interval.cancel(p);
@@ -143,7 +191,6 @@ app.component('dashboard', {
                 miner.history = (body ? _.sortBy(body, ['timestamp']) : []) as IWalletInfo[];
                 var ago24h = moment('now').milliseconds() - (24 * 60 * 60 * 1000);
                 miner.history = _.filter(miner.history, (i: IWalletInfo) => i.timestamp > ago24h);
-                rebuildChart(miner);
                 toggleFlagIfDone();
             });
 
@@ -166,18 +213,13 @@ app.component('dashboard', {
                 miner.last = body;
                 toggleFlagIfDone();
             });
-        }
 
-        function loadMinerFile(miner: IMiner, path: string, callback: (body: any) => void) {
-            var url = 'miner/' + miner.id + '/' + path;
-            console.log('loading from ' + url);
-            $http.get(url).then(function(response: any) {
-                console.log(url + ' loaded ok');
-                callback(response.data);
-            }, function(response: any) {
-                console.log(url + ' error loading');
-                callback(null);
-            });
+            function loadMinerFile(miner: IMiner, path: string, callback: (body: any) => void) {
+                minerFile.get({
+                    id: miner.id,
+                    path: path
+                }).then(callback);
+            }
         }
 
         function getError(response: any) {

@@ -13,9 +13,9 @@
         <li>IP: {{$ctrl.miner.ip}}</li>
     </ul>
     <div class="history">
-        <canvas id="line" class="chart chart-line" chart-data="$ctrl.miner.chart.data"
-        chart-labels="$ctrl.miner.chart.labels" chart-series="$ctrl.miner.chart.series"
-        chart-options="$ctrl.miner.chart.options" chart-dataset-override="$ctrl.miner.chart.datasetOverride" >
+        <canvas id="line" class="chart chart-line" chart-data="$ctrl.chart().data"
+        chart-labels="$ctrl.chart().labels" chart-series="$ctrl.chart().series"
+        chart-options="$ctrl.chart().options" chart-dataset-override="$ctrl.chart().datasetOverride" >
         </canvas>
     </div>
 
