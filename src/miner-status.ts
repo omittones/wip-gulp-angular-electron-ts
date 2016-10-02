@@ -6,11 +6,11 @@ function ago(milis: number): string {
     return dur.humanize() + ' ago';
 }
 
-export default class MinerStatusComponent {
+export default class MinerStatusComponent implements ng.IComponentController {
     private static logVisible: any = {};
-    static $name: 'minerStatus'
-    static $templateUrl: 'miner-status.html';
-    static $bindings: {
+    static $name = 'minerStatus';
+    static $templateUrl = 'miner-status.html';
+    static $bindings = {
         miner: '<'
     };
 
@@ -20,6 +20,9 @@ export default class MinerStatusComponent {
     }
 
     public lastTimestamp(): string {
+
+        var temp = MinerStatusComponent.$inject;
+
         if (this.miner.history) {
             var times = _.map(this.miner.history, (m: Core.IWalletInfo) => {
                 return m.timestamp || 0;
