@@ -29,7 +29,7 @@ namespace Core {
         get(): ng.IPromise<TView[]>;
     }
 
-    export type MinerFileRequest = { id: number, path: string };
+    export type MinerFileRequest = { id: number, ip:string, path: string };
 
     export type MinerFileRespone = string | {};
 }

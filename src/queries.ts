@@ -52,50 +52,19 @@ export class MinerQuery implements Core.IQuery<Core.IMiner, {}> {
 
 export class MinerFileQuery implements Core.IQuery<Core.MinerFileRespone, Core.MinerFileRequest> {
 
-    private api: DigitalOcean;
-
-    static $inject = ['$http', '$q'];
-    constructor(private $http: ng.IHttpService,
-        private $q: ng.IQService) {
-        this.api = new DigitalOcean(API_KEY, 1000);
+    static $inject = ['$http'];
+    constructor(private $http: ng.IHttpService) {
     }
 
     public get(request: Core.MinerFileRequest): ng.IPromise<Core.MinerFileRespone> {
-
-        let defered = this.$q.defer<Core.MinerFileRespone>()
-
-        this.api.dropletsGetById(request.id, (err, res, body) => {
-            if (!err && body && body.droplet) {
-                let details = mapDroplet(body.droplet);
-                this.loadDropletFile(details, request.path, function(url, body) {
-                    defered.resolve(body);
-                });
-            } else {
-                console.log('ERROR: could not load single droplet ' + request.id.toString());
-                defered.resolve(null);
-            }
-        });
-
-        return defered.promise;
-    }
-
-    private loadDropletFile(details: Core.IMiner, path: string, callback: Action2<string, any>) {
-        let url = 'https://' + details.ip + '/' + path;
-        let agentOptions = {
-            host: details.ip,
-            port: '443',
-            path: '/' + path,
-            rejectUnauthorized: false
-        };
-        let agent = new https.Agent(agentOptions);
-
-        this.$http.get<any>(url).then(function(body) {
-            console.log('received from ' + url);
-            callback(url, body);
-        }, function(reason) {
-            console.log('ERROR: could not receve from ' + url);
-            console.log(reason);
-            callback(url, null);
-        });
+        let url = 'https://' + request.ip + '/' + request.path;
+        return this.$http.get<any>(url).then(
+            function(response) {
+                console.log('received from ' + url);
+                return response.data;
+            }, function(response) {
+                console.log('ERROR: could not receve from ' + url);
+                return null;
+            });
     }
 }

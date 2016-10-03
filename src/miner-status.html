@@ -1,26 +1,26 @@
-<div ng-class="{miner:true, inactive:$ctrl.miner.status !== 'active'}">
-    <h2 class="title">{{$ctrl.miner.name}} {{$ctrl.miner.loading ? '...loading...' : ''}}</h2>
-    <h3 class="timestamp" ng-if="!$ctrl.miner.error">Last timestamp: {{$ctrl.lastTimestamp()}}</h3>
-    <h3 class="error" ng-if="$ctrl.miner.error">{{$ctrl.miner.error}}</h3>
-    <pre class="ps">{{$ctrl.miner.ps}}</pre>
+<div ng-class="{miner:true, inactive:$ctrl.model.status !== 'active'}">
+    <h2 class="title">{{$ctrl.model.name}} {{$ctrl.model.loading ? '...loading...' : ''}}</h2>
+    <h3 class="timestamp" ng-if="!$ctrl.model.error">Last timestamp: {{$ctrl.lastTimestamp()}}</h3>
+    <h3 class="error" ng-if="$ctrl.model.error">{{$ctrl.model.error}}</h3>
+    <pre class="ps">{{$ctrl.model.ps}}</pre>
     <ul class="statistics">
-        <li>Difficulty: {{$ctrl.miner.info.difficulty}}</li>
-        <li>Keypool size: {{$ctrl.miner.info.keypoolsize}}</li>
-        <li>Blocks: {{$ctrl.miner.info.blocks}}</li>
-        <li>Balance: {{$ctrl.miner.walletinfo.balance}}</li>
-        <li>Immature Balance: {{$ctrl.miner.walletinfo.immature_balance}}</li>
-        <li>Unconfirmed Balance: {{$ctrl.miner.walletinfo.unconfirmed_balance}}</li>
-        <li>IP: {{$ctrl.miner.ip}}</li>
+        <li>Difficulty: {{$ctrl.model.info.difficulty}}</li>
+        <li>Keypool size: {{$ctrl.model.info.keypoolsize}}</li>
+        <li>Blocks: {{$ctrl.model.info.blocks}}</li>
+        <li>Balance: {{$ctrl.model.walletinfo.balance}}</li>
+        <li>Immature Balance: {{$ctrl.model.walletinfo.immature_balance}}</li>
+        <li>Unconfirmed Balance: {{$ctrl.model.walletinfo.unconfirmed_balance}}</li>
+        <li>IP: {{$ctrl.model.ip}}</li>
     </ul>
     <div class="history">
-        <canvas id="line" class="chart chart-line" chart-data="$ctrl.chart().data"
-        chart-labels="$ctrl.chart().labels" chart-series="$ctrl.chart().series"
-        chart-options="$ctrl.chart().options" chart-dataset-override="$ctrl.chart().datasetOverride" >
+        <canvas id="line" class="chart chart-line" chart-data="$ctrl.getChart().data"
+        chart-labels="$ctrl.getChart().labels" chart-series="$ctrl.getChart().series"
+        chart-options="$ctrl.getChart().options" chart-dataset-override="$ctrl.getChart().datasetOverride" >
         </canvas>
     </div>
 
     <div class="logs">
         <button ng-click="$ctrl.toggleLogs()">{{$ctrl.isLogVisible() ? 'Hide' : 'Show' }}</button>
-        <pre ng-if="$ctrl.isLogVisible()" class="last">{{$ctrl.miner.last}}</pre>
+        <pre ng-if="$ctrl.isLogVisible()" class="last">{{$ctrl.model.last}}</pre>
     </div>
 </div>

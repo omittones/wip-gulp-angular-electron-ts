@@ -57,8 +57,6 @@ export default class DashboardComponent implements ng.IComponentController {
 
         this.loadMinerFile(miner, 'history.json', function(body: any) {
             miner.history = (body ? _.sortBy(body, ['timestamp']) : []) as Core.IWalletInfo[];
-            var ago24h = moment('now').milliseconds() - (24 * 60 * 60 * 1000);
-            miner.history = _.filter(miner.history, (i: Core.IWalletInfo) => i.timestamp > ago24h);
             toggleFlagIfDone();
         });
 
@@ -85,6 +83,7 @@ export default class DashboardComponent implements ng.IComponentController {
 
     private loadMinerFile(miner: Core.IMiner, path: string, callback: (body: any) => void) {
         this.minerFile.get({
+            ip: miner.ip,
             id: miner.id,
             path: path
         }).then(callback);
