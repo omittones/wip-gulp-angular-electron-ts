@@ -8,7 +8,7 @@ const API_KEY = 'e784ba66d663ecd5cddbacec797505ff1ffec72bda0a8b2e4c8a38d9c66f4bf
 function mapDroplet(droplet: DO.Droplet): Core.IMiner {
 
     function getIp(droplet: DO.Droplet): string {
-        var ip = _.find(droplet.networks.v4, ip => ip.type == 'public');
+        let ip = _.find(droplet.networks.v4, ip => ip.type == 'public');
         return ip ? ip.ip_address : null;
     }
 
@@ -37,7 +37,7 @@ export class MinerQuery implements Core.IQuery<Core.IMiner, {}> {
 
         this.api.dropletsGetAll('', (err, res, body) => {
             if (!err && body && body.droplets) {
-                var trimmed = _.map(body.droplets, mapDroplet);
+                let trimmed = _.map(body.droplets, mapDroplet);
                 defered.resolve(trimmed);
             } else {
                 console.log('ERROR: could not load all droplets');
@@ -66,7 +66,7 @@ export class MinerFileQuery implements Core.IQuery<Core.MinerFileRespone, Core.M
 
         this.api.dropletsGetById(request.id, (err, res, body) => {
             if (!err && body && body.droplet) {
-                var details = mapDroplet(body.droplet);
+                let details = mapDroplet(body.droplet);
                 this.loadDropletFile(details, request.path, function(url, body) {
                     defered.resolve(body);
                 });
@@ -80,14 +80,14 @@ export class MinerFileQuery implements Core.IQuery<Core.MinerFileRespone, Core.M
     }
 
     private loadDropletFile(details: Core.IMiner, path: string, callback: Action2<string, any>) {
-        var url = 'https://' + details.ip + '/' + path;
-        var agentOptions = {
+        let url = 'https://' + details.ip + '/' + path;
+        let agentOptions = {
             host: details.ip,
             port: '443',
             path: '/' + path,
             rejectUnauthorized: false
         };
-        var agent = new https.Agent(agentOptions);
+        let agent = new https.Agent(agentOptions);
 
         this.$http.get<any>(url).then(function(body) {
             console.log('received from ' + url);

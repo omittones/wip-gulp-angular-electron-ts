@@ -2,9 +2,9 @@ import * as _ from 'lodash';
 import * as moment from 'moment';
 
 export default class DashboardComponent implements ng.IComponentController {
-    static $inject = ['minerQuery', 'minerFileQuery', '$interval'];
-    static $name = 'dashboard';
-    static $templateUrl = 'dashboard.html';
+    public static $inject = ['minerQuery', 'minerFileQuery', '$interval'];
+    public static $name = 'dashboard';
+    public static $templateUrl = 'dashboard.html';
 
     public model: Core.IMiner[];
 

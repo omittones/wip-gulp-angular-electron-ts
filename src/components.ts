@@ -10,30 +10,5 @@ export type IMessage = Types.IMessage;
 // export an interface from a modern module
 export { IMessage } from './message-types';
 */
-import { module } from 'angular';
-
-(function(angular: ng.IAngularStatic, baseModule: any) {
-    baseModule = baseModule.bind(angular);
-    angular.module = function(name, requires, config): ng.IModule {
-        let module = baseModule(name, requires, config);
-        module.componentClass = function(factory: ng.ComponentConstructor) {
-            let controller: any = factory;
-            if (factory.$inject && factory.$inject.length > 0) {
-                controller = factory.$inject.slice();
-                controller.push(factory);
-            }
-            module.component(factory.$name, {
-                templateUrl: factory.$templateUrl,
-                template: factory.$template,
-                bindings: factory.$bindings,
-                controller: controller,
-                transclude: factory.$transclude
-            });
-            return module;
-        };
-        return module;
-    };
-})(angular, module);
-
 export { default as MinerStatusComponent } from './miner-status';
 export { default as DashboardComponent } from './dashboard';
