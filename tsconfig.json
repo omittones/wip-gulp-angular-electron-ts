@@ -5,7 +5,7 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "noImplicitAny": true,
-    "outDir": "./lib",
+    "outDir": "./dist",
     "preserveConstEnums": true,
     "removeComments": true,
     "sourceMap": true

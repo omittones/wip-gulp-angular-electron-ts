@@ -15,9 +15,9 @@ var tsFilesGlob = (function(c) {
     return c.filesGlob || c.files || 'src/**/*.ts';
 })(require('./tsconfig.json'));
 
-gulp.task('clean', 'Cleans the generated js files from lib directory', function() {
+gulp.task('clean', 'Cleans the generated js files from dist directory', function() {
     return del([
-        'lib/**/*'
+        'dist/**/*'
     ]);
 });
 
@@ -33,13 +33,13 @@ gulp.task('lint', 'Lints all TypeScript source files', function() {
 gulp.task('html', 'Copies all html source files', function() {
     return gulp.src('src/*.html')
         .pipe(print())
-        .pipe(gulp.dest('lib'));
+        .pipe(gulp.dest('dist'));
 });
 
 gulp.task('fonts', 'Copies all font source files', function() {
     return gulp.src('src/bower_components/bootstrap/dist/fonts/*')
         .pipe(print())
-        .pipe(gulp.dest('lib/fonts'));
+        .pipe(gulp.dest('dist/fonts'));
 });
 
 gulp.task('js', 'Copies all js source files', function() {
@@ -52,7 +52,7 @@ gulp.task('js', 'Copies all js source files', function() {
         .pipe(order(['jquery.js', 'initialize.js', '*.js']))
         .pipe(print())
         .pipe(concat('js/bundle.js'))
-        .pipe(gulp.dest('lib'));
+        .pipe(gulp.dest('dist'));
 });
 
 gulp.task('css', 'Copies all css source files', function() {
@@ -63,7 +63,7 @@ gulp.task('css', 'Copies all css source files', function() {
     return gulp.src(css)
         .pipe(print())
         .pipe(concat('css/bundle.css'))
-        .pipe(gulp.dest('lib'));
+        .pipe(gulp.dest('dist'));
 });
 
 //gulp.task('build', 'Compiles all TypeScript source files', ['html', 'lint'], function (cb) {
@@ -75,6 +75,16 @@ gulp.task('ts', 'Compiles all TypeScript source files', [], function(cb) {
         }
     });
     return exec('tsc', function(err, stdout, stderr) {
+        console.log(stdout);
+        if (stderr) {
+            console.log(stderr);
+        }
+        cb(err);
+    });
+});
+
+gulp.task('publish', 'Publishes asar package', ['build'], function(cb) {
+    return exec('asar pack ./dist dist.asar', function(err, stdout, stderr) {
         console.log(stdout);
         if (stderr) {
             console.log(stderr);
