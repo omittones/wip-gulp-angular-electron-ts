@@ -2,8 +2,8 @@
 coverage/
 node_modules/**
 src/bower_components
-dist/
-publish/
+obj/
+bin/
 npm-debug.log
 *.sublime-workspace
 

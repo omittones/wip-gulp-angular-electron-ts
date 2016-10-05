@@ -2,8 +2,7 @@
     "folders": [
         {
             "file_exclude_patterns": [
-                "*.sublime-workspace",
-                "dist.asar"
+                "*.sublime-workspace"
             ],
             "folder_exclude_patterns": [
                 ".vs",
@@ -11,7 +10,8 @@
                 "obj",
                 "packages",
                 "node_modules",
-                "dist"
+                "obj",
+                "bin"
             ],
             "path": "."
         },

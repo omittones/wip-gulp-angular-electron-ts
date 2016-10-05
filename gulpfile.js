@@ -17,9 +17,9 @@ var tsFilesGlob = (function(c) {
     return c.filesGlob || c.files || 'src/**/*.ts';
 })(require('./tsconfig.json'));
 
-gulp.task('clean', 'Cleans the generated js files from dist directory', function() {
+gulp.task('clean', 'Cleans the generated js files from obj directory', function() {
     return del([
-        'dist/**/*'
+        'obj/**/*'
     ]);
 });
 
@@ -35,13 +35,13 @@ gulp.task('lint', 'Lints all TypeScript source files.', function() {
 gulp.task('html', 'Copies all html source files.', function() {
     return gulp.src('src/*.html')
         .pipe(print())
-        .pipe(gulp.dest('dist'));
+        .pipe(gulp.dest('obj'));
 });
 
 gulp.task('fonts', 'Copies all font source files.', function() {
     return gulp.src('src/bower_components/bootstrap/dist/fonts/*')
         .pipe(print())
-        .pipe(gulp.dest('dist/fonts'));
+        .pipe(gulp.dest('obj/fonts'));
 });
 
 gulp.task('js', 'Copies all js source files.', function() {
@@ -54,7 +54,7 @@ gulp.task('js', 'Copies all js source files.', function() {
         .pipe(order(['jquery.js', 'initialize.js', '*.js']))
         .pipe(print())
         .pipe(concat('js/bundle.js'))
-        .pipe(gulp.dest('dist'));
+        .pipe(gulp.dest('obj'));
 });
 
 gulp.task('css', 'Copies all css source files.', function() {
@@ -65,7 +65,7 @@ gulp.task('css', 'Copies all css source files.', function() {
     return gulp.src(css)
         .pipe(print())
         .pipe(concat('css/bundle.css'))
-        .pipe(gulp.dest('dist'));
+        .pipe(gulp.dest('obj'));
 });
 
 gulp.task('ts', 'Compiles all TypeScript source files', [], function(cb) {
@@ -100,7 +100,7 @@ gulp.task('publish', 'Publishes app', ['build'], function(cb) {
                 return true;
             return false;
         },
-        out: './publish/',
+        out: './bin/',
         overwrite: true,
         platform: 'win32'
     };
