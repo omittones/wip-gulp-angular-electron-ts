@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var gulp = require('gulp');
 gulp = require('gulp-help')(gulp);
 var order = require('gulp-order');
@@ -84,41 +85,46 @@ gulp.task('ts', 'Compiles all TypeScript source files', [], function(cb) {
 });
 
 gulp.task('publish', 'Publishes app', ['build'], function(cb) {
-
     var options = {
         dir : '.',
         arch: 'x64',
         asar: true,
         ignore: function(path) {
-            debugger;
-            console.log(path);
+            if (path.startsWith('/.git/'))
+                return true;
+            if (path.startsWith('/src/'))
+                return true;
+            if (path.endsWith('.d.ts'))
+                return true;
+            if (path.startsWith('/node_modules/.bin/'))
+                return true;
             return false;
         },
         out: './publish/',
         overwrite: true,
         platform: 'win32'
     };
-
     packager(options, function (err, appPaths) {
-        /* … */
-
+        _.each(appPaths, p => {
+            console.log('Published to ' + p);
+        });
         cb(err);
-    })
+    });
 });
 
-gulp.task('rebuild', 'Rebuilds everything', ['clean', 'build'], function() {
+gulp.task('rebuild', 'Rebuilds everything.', ['clean', 'build'], function() {
 });
 
-gulp.task('build', 'Builds everything', ['ts', 'js', 'fonts', 'html', 'css'], function() {
+gulp.task('build', 'Builds everything.', ['ts', 'js', 'fonts', 'html', 'css'], function() {
 });
 
-gulp.task('test', 'Runs the Jasmine test specs', ['build'], function() {
+gulp.task('test', 'Runs the Jasmine test specs.', ['build'], function() {
     return gulp.src('test/*.ts')
         .pipe(mocha({
             require: ['ts-node/register']
         }));
 });
 
-gulp.task('watch', 'Watches ts source fiSles and runs build on change', function() {
+gulp.task('watch', 'Watches ts source files and runs build on change.', function() {
     gulp.watch('src/**/*', ['build']);
 });
