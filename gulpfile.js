@@ -8,6 +8,7 @@ var mocha = require('gulp-mocha');
 var print = require('gulp-print');
 var path = require('path');
 var del = require('del');
+var packager = require('electron-packager')
 var tslintCustom = require('tslint'); // for tslint-next https://github.com/panuhorsmalahti/gulp-tslint#specifying-the-tslint-module
 require('dotbin');
 
@@ -21,7 +22,7 @@ gulp.task('clean', 'Cleans the generated js files from dist directory', function
     ]);
 });
 
-gulp.task('lint', 'Lints all TypeScript source files', function() {
+gulp.task('lint', 'Lints all TypeScript source files.', function() {
     return gulp.src(tsFilesGlob)
         .pipe(tslint({
             tslint: tslintCustom,
@@ -30,19 +31,19 @@ gulp.task('lint', 'Lints all TypeScript source files', function() {
         .pipe(tslint.report());
 });
 
-gulp.task('html', 'Copies all html source files', function() {
+gulp.task('html', 'Copies all html source files.', function() {
     return gulp.src('src/*.html')
         .pipe(print())
         .pipe(gulp.dest('dist'));
 });
 
-gulp.task('fonts', 'Copies all font source files', function() {
+gulp.task('fonts', 'Copies all font source files.', function() {
     return gulp.src('src/bower_components/bootstrap/dist/fonts/*')
         .pipe(print())
         .pipe(gulp.dest('dist/fonts'));
 });
 
-gulp.task('js', 'Copies all js source files', function() {
+gulp.task('js', 'Copies all js source files.', function() {
     var js = [
         'src/bower_components/jquery/dist/jquery.js',
         'src/js/initialize.js',
@@ -55,7 +56,7 @@ gulp.task('js', 'Copies all js source files', function() {
         .pipe(gulp.dest('dist'));
 });
 
-gulp.task('css', 'Copies all css source files', function() {
+gulp.task('css', 'Copies all css source files.', function() {
     var css = [
         'src/bower_components/bootstrap/dist/css/bootstrap.css',
         'src/css/*.css'
@@ -66,7 +67,6 @@ gulp.task('css', 'Copies all css source files', function() {
         .pipe(gulp.dest('dist'));
 });
 
-//gulp.task('build', 'Compiles all TypeScript source files', ['html', 'lint'], function (cb) {
 gulp.task('ts', 'Compiles all TypeScript source files', [], function(cb) {
     exec('tsc --version', function(err, stdout, stderr) {
         console.log('Using TypeScript ', stdout);
@@ -83,14 +83,27 @@ gulp.task('ts', 'Compiles all TypeScript source files', [], function(cb) {
     });
 });
 
-gulp.task('publish', 'Publishes asar package', ['build'], function(cb) {
-    return exec('asar pack ./dist dist.asar', function(err, stdout, stderr) {
-        console.log(stdout);
-        if (stderr) {
-            console.log(stderr);
-        }
+gulp.task('publish', 'Publishes app', ['build'], function(cb) {
+
+    var options = {
+        dir : '.',
+        arch: 'x64',
+        asar: true,
+        ignore: function(path) {
+            debugger;
+            console.log(path);
+            return false;
+        },
+        out: './publish/',
+        overwrite: true,
+        platform: 'win32'
+    };
+
+    packager(options, function (err, appPaths) {
+        /* … */
+
         cb(err);
-    });
+    })
 });
 
 gulp.task('rebuild', 'Rebuilds everything', ['clean', 'build'], function() {
