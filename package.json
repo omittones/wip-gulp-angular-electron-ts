@@ -21,7 +21,7 @@
   "dependencies": {
     "angular": "^1.5.8",
     "angular-chart.js": "^1.0.3",
-    "do-wrapper": "^3.10.0",
+    "do-wrapper": "git+https://github.com/omittones/do-wrapper.git#typescript-definitions",
     "lodash": "^4.16.2",
     "moment": "^2.15.1",
     "request": "^2.75.0"
