@@ -9,8 +9,10 @@ var mocha = require('gulp-mocha');
 var print = require('gulp-print');
 var path = require('path');
 var del = require('del');
+var fs = require('fs');
 var packager = require('electron-packager')
 var tslintCustom = require('tslint'); // for tslint-next https://github.com/panuhorsmalahti/gulp-tslint#specifying-the-tslint-module
+var asar = require('asar');
 require('dotbin');
 
 var tsFilesGlob = (function(c) {
@@ -89,7 +91,11 @@ gulp.task('publish', 'Publishes app', ['build'], function(cb) {
         dir : '.',
         arch: 'x64',
         asar: true,
+        prune: true,
         ignore: function(path) {
+
+            if (path.endsWith('.md'))
+                return true;
             if (path.startsWith('/.git/'))
                 return true;
             if (path.startsWith('/src/'))
@@ -98,6 +104,25 @@ gulp.task('publish', 'Publishes app', ['build'], function(cb) {
                 return true;
             if (path.startsWith('/node_modules/.bin/'))
                 return true;
+            if (path.startsWith('/node_modules/angular-chart.js/examples'))
+                return true;
+            if (path.startsWith('/node_modules/angular-chart.js/test'))
+                return true;
+            if (path.startsWith('/node_modules/angular-chart.js/tmp'))
+                return true;
+            if (path.startsWith('/node_modules/chart.js/test'))
+                return true;
+            if (path.startsWith('/node_modules/chart.js/samples'))
+                return true;
+            if (path.startsWith('/node_modules/chart.js/samples'))
+                return true;
+            if (path.startsWith('/node_modules/lodash/') && !path.endsWith('lodash.js'))
+                return true;
+            if (path.startsWith('/node_modules/moment/') && !path.endsWith('moment.js'))
+                return true;
+            if (path.indexOf('is-my-json-valid/test') > -1)
+                return true;
+
             return false;
         },
         out: './bin/',
@@ -107,7 +132,12 @@ gulp.task('publish', 'Publishes app', ['build'], function(cb) {
     packager(options, function (err, appPaths) {
         _.each(appPaths, p => {
             console.log('Published to ' + p);
+            var asarFile = '.\\' + p + '\\resources\\app.asar';
+            var files = asar.listPackage(asarFile);
+            var output = files.join('\n');
+            fs.writeFileSync('.\\filelist.txt', output);
         });
+
         cb(err);
     });
 });

@@ -22,7 +22,6 @@
     "angular": "^1.5.8",
     "angular-chart.js": "^1.0.3",
     "do-wrapper": "^3.10.0",
-    "electron": "^1.4.2",
     "lodash": "^4.16.2",
     "moment": "^2.15.1",
     "request": "^2.75.0"
@@ -50,7 +49,8 @@
     "gulp-tslint": "^6.0",
     "ts-node": "^1.2.2",
     "tslint": "3.14.0-dev.1",
-    "typescript": "2.0.0"
+    "typescript": "2.0.0",
+    "electron": "^1.4.2"
   },
   "engines": {
     "node": ">=4.0.0"

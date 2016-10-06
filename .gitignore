@@ -6,6 +6,7 @@ obj/
 bin/
 npm-debug.log
 *.sublime-workspace
+filelist.txt
 
 !node_modules/@types
 !node_modules/@types/*
