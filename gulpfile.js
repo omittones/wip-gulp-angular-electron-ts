@@ -94,6 +94,9 @@ gulp.task('publish', 'Publishes app', ['build'], function(cb) {
         prune: true,
         ignore: function(path) {
 
+            if (path.endsWith('package.json'))
+                return false;
+
             if (path.endsWith('.md'))
                 return true;
             if (path.startsWith('/.git/'))
