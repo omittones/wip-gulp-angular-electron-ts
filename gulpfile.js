@@ -21,7 +21,8 @@ var tsFilesGlob = (function(c) {
 
 gulp.task('clean', 'Cleans the generated js files from obj directory', function() {
     return del([
-        'obj/**/*'
+        'obj/**/*',
+        'bin/**/*'
     ]);
 });
 
@@ -96,14 +97,15 @@ gulp.task('publish', 'Publishes app', ['build'], function(cb) {
 
             if (path.endsWith('package.json'))
                 return false;
-
             if (path.endsWith('.md'))
+                return true;
+            if (path.endsWith('.d.ts'))
+                return true;
+            if (path.endsWith('.js.map'))
                 return true;
             if (path.startsWith('/.git/'))
                 return true;
             if (path.startsWith('/src/'))
-                return true;
-            if (path.endsWith('.d.ts'))
                 return true;
             if (path.startsWith('/node_modules/.bin/'))
                 return true;

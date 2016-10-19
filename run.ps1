@@ -1,1 +1,1 @@
-start-process -NoNewWindow ".\node_modules\.bin\electron" -ArgumentList "."
+start-process ".\node_modules\.bin\electron" -ArgumentList "."
