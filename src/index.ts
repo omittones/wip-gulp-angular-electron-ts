@@ -11,6 +11,6 @@ var app = angular.module('minerDashboard', ['chart.js']);
 
 app.componentClass(Components.MinerStatusComponent);
 app.componentClass(Components.DashboardComponent);
-app.service('minerQuery', ['$http', '$q', ($http: ng.IHttpService, $q: ng.IQService) => new Queries.MinerQuery($http, $q)]);
-app.service('minerFileQuery', ['$http', ($http: ng.IHttpService) => new Queries.MinerFileQuery($http)]);
+app.service('minerQuery', ['$http', '$q', ($http: angular.IHttpService, $q: angular.IQService) => new Queries.MinerQuery($http, $q)]);
+app.service('minerFileQuery', ['$http', ($http: angular.IHttpService) => new Queries.MinerFileQuery($http)]);
 app.decorator('$httpBackend', ['$delegate', Decorators.acceptSelfSignedHttpsCalls]);

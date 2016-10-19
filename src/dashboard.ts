@@ -1,5 +1,6 @@
 import * as _ from 'lodash';
 import * as moment from 'moment';
+import * as ng from 'angular';
 
 export default class DashboardComponent implements ng.IComponentController {
     public static $inject = ['minerQuery', 'minerFileQuery', '$interval'];
@@ -13,7 +14,7 @@ export default class DashboardComponent implements ng.IComponentController {
     constructor(
         private miners: Core.ISimpleQuery<Core.IMiner>,
         private minerFile: Core.IQuery<any, Core.MinerFileRequest>,
-        private $interval: angular.IIntervalService) {
+        private $interval: ng.IIntervalService) {
 
         this.intervals = [];
 
@@ -25,7 +26,7 @@ export default class DashboardComponent implements ng.IComponentController {
         var self = this;
         this.miners.get().then(function(response) {
 
-            _.each(self.intervals, (p: angular.IPromise<any>) => {
+            _.each(self.intervals, (p: ng.IPromise<any>) => {
                 self.$interval.cancel(p);
             });
             self.intervals.length = 0;

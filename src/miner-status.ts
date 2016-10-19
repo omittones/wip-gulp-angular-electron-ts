@@ -1,5 +1,6 @@
 import * as moment from 'moment';
 import * as _ from 'lodash';
+import * as angular from 'angular';
 
 function ago(millis: number): string {
     if (millis != null) {
@@ -16,7 +17,7 @@ function ago(millis: number): string {
     return 'never';
 }
 
-export default class MinerStatusComponent implements ng.IComponentController {
+export default class MinerStatusComponent implements angular.IComponentController {
     public static $name = 'minerStatus';
     public static $templateUrl = 'miner-status.html';
     public static $bindings = {

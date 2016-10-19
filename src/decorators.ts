@@ -4,12 +4,31 @@ import * as URL from 'url';
 import * as angular from 'angular';
 import * as _ from 'lodash';
 
-(function(angular: ng.IAngularStatic, baseModule: any) {
+declare module 'angular' {
+
+    type HttpResponseCallback = (status:number, response:any, headersString:string, statusText:string) => void;
+
+    interface ComponentConstructor {
+        new (...args: any[]): angular.IComponentController;
+        $inject?: string[];
+        $name: string;
+        $bindings?: any;
+        $templateUrl?: string;
+        $template?: string;
+        $transclude?: boolean;
+    }
+
+    interface IModule {
+        componentClass(factory: ComponentConstructor): angular.IModule;
+    }
+}
+
+(function(angular: angular.IAngularStatic, baseModule: any) {
     baseModule = baseModule.bind(angular);
-    angular.module = function(name, requires, config): ng.IModule {
+    angular.module = function(name, requires, config): angular.IModule {
         let modInstance = baseModule(name, requires, config);
         if (!modInstance.componentClass) {
-            modInstance.componentClass = function(factory: ng.ComponentConstructor) {
+            modInstance.componentClass = function(factory: angular.ComponentConstructor) {
                 let controller: any = factory;
                 if (factory.$inject && factory.$inject.length > 0) {
                     controller = factory.$inject.slice();
@@ -29,9 +48,9 @@ import * as _ from 'lodash';
     };
 })(angular, angular.module);
 
-export function acceptSelfSignedHttpsCalls($delegate: ng.IHttpBackendService) {
+export function acceptSelfSignedHttpsCalls($delegate: angular.IHttpBackendService) {
 
-    function $unsecuredHttps(method: string, url: string, post?:any, callback?:ng.HttpResponseCallback):void {
+    function $unsecuredHttps(method: string, url: string, post?:any, callback?:angular.HttpResponseCallback):void {
 
         let uri = URL.parse(url, false, true);
         let agentOptions = {
@@ -57,11 +76,11 @@ export function acceptSelfSignedHttpsCalls($delegate: ng.IHttpBackendService) {
         });
     }
 
-    let decorator: ng.IHttpBackendService = function(
+    let decorator: angular.IHttpBackendService = function(
         method: string,
         url: string,
         post?: any,
-        callback?: ng.HttpResponseCallback,
+        callback?: angular.HttpResponseCallback,
         headers?: any,
         timeout?: number,
         withCredentials?: boolean): void {

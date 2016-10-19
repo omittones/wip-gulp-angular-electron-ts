@@ -1,5 +1,6 @@
 import * as https from 'https';
 import * as _ from 'lodash';
+import * as angular from 'angular';
 import DigitalOcean = require('do-wrapper');
 import DO = DigitalOcean;
 
@@ -26,12 +27,12 @@ export class MinerQuery implements Core.IQuery<Core.IMiner, {}> {
 
     static $inject = ['$http', '$q'];
     constructor(
-        private $http: ng.IHttpService,
-        private $q: ng.IQService) {
+        private $http: angular.IHttpService,
+        private $q: angular.IQService) {
         this.api = new DigitalOcean(API_KEY, 1000);
     }
 
-    public get(request: {}): ng.IPromise<Core.IMiner[]> {
+    public get(request: {}): angular.IPromise<Core.IMiner[]> {
 
         let defered = this.$q.defer<Core.IMiner[]>();
 
@@ -53,10 +54,10 @@ export class MinerQuery implements Core.IQuery<Core.IMiner, {}> {
 export class MinerFileQuery implements Core.IQuery<Core.MinerFileRespone, Core.MinerFileRequest> {
 
     static $inject = ['$http'];
-    constructor(private $http: ng.IHttpService) {
+    constructor(private $http: angular.IHttpService) {
     }
 
-    public get(request: Core.MinerFileRequest): ng.IPromise<Core.MinerFileRespone> {
+    public get(request: Core.MinerFileRequest): angular.IPromise<Core.MinerFileRespone> {
         let url = 'https://' + request.ip + '/' + request.path;
         return this.$http.get<any>(url).then(
             function(response) {
